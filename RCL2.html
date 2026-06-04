@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>ALLER LENSOIS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: red;
+      font-family: 'Raleway', sans-serif;
+    }
+
+   
+    .header {
+      background-color: black;
+      color: white;
+      text-align: center;
+      padding: 10px 20px;
+      border: 20px solid black;
+      border-radius: 25px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      width: 100%;
+    }
+
+    
+    .section-titre {
+      font-family: 'Raleway', sans-serif;
+      font-weight: bold;
+      color: yellow;
+      font-size: 36px;
+      margin: 30px 20px 15px 20px;
+    }
+
+    
+    .btn-lien {
+      background-color: black;
+      color: yellow;
+      font-family: 'Raleway', sans-serif;
+      font-weight: bold;
+      padding: 12px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+      border: 2px solid yellow;
+      margin: 20px;
+      display: inline-block;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .btn-lien:hover {
+      background-color: yellow;
+      color: black;
+    }
+
+    
+    .photos-container {
+      margin: 20px;
+    }
+
+    .photos-container img {
+      border-radius: 25px;
+      width: 300px;
+      height: 450px;
+      margin: 10px 40px 40px 40px;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .photos-container img:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 20px rgba(255, 255, 0, 0.6);
+    }
+
+    
+    #lightbox {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.92);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      cursor: zoom-out;
+    }
+
+    #lightbox.active {
+      display: flex;
+    }
+
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 18px;
+      border: 3px solid yellow;
+      box-shadow: 0 0 40px rgba(255, 255, 0, 0.3);
+      cursor: default;
+      animation: zoomIn 0.25s ease;
+    }
+
+    #lightbox-close {
+      position: absolute;
+      top: 20px; right: 30px;
+      font-size: 42px;
+      color: yellow;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+      font-family: 'Raleway', sans-serif;
+      transition: color 0.2s;
+    }
+
+    #lightbox-close:hover {
+      color: white;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+
+    /* ===== SECTION CHANTS ===== */
+    .chants-container {
+      margin: 20px 40px;
+    }
+
+    #selectChant {
+      font-family: 'Raleway', sans-serif;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: 3px solid yellow;
+      background-color: black;
+      color: yellow;
+      cursor: pointer;
+      outline: none;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    #selectChant:hover {
+      background-color: yellow;
+      color: black;
+    }
+
+    #selectChant option {
+      background-color: black;
+      color: yellow;
+    }
+
+   
+    #infoChant {
+      margin-top: 25px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+    }
+
+    #infoChant.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    .chant-card {
+      background-color: black;
+      border: 3px solid yellow;
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 600px;
+    }
+
+    .chant-titre {
+      color: yellow;
+      font-family: 'Raleway', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+
+    .chant-paroles {
+      color: white;
+      font-family: 'Raleway', sans-serif;
+      font-size: 18px;
+      line-height: 2;
+      margin-bottom: 25px;
+      white-space: pre-wrap;
+    }
+
+    .audio-zone {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .audio-label {
+      color: yellow;
+      font-family: 'Raleway', sans-serif;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    audio {
+      width: 100%;
+      border-radius: 10px;
+      accent-color: yellow;
+    }
+
+    .paroles-vide {
+      color: rgba(255, 255, 255, 0.4);
+      font-style: italic;
+      font-size: 16px;
+    }
+
+   
+    .footer {
+      text-align: center;
+      margin: 40px 20px;
+    }
+
+    .spacer {
+      height: 40px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <h1 class="header">ALLER LENSOIS, ALLER !</h1>
+
+  <div class="spacer"></div>
+
+  <!-- SECTION SITE -->
+  <h1 class="section-titre">⚒ LE SITE DU RC LENS ⚒</h1>
+  <a href="https://www.rclens.fr/fr/" class="btn-lien">Accueil RCL</a>
+  <a href="https://www.instagram.com/rclens/" class="btn-lien">Instagram RCL</a>
+
+  <div class="spacer"></div>
+
+  <!-- SECTION BILLETTERIE -->
+  <h1 class="section-titre">⚒ LA BILLETERIE ⚒</h1>
+  <a href="https://billetterie.rclens.fr/fr/" class="btn-lien">Billetterie du RCL</a>
+
+  <div class="spacer"></div>
+
+<h1 class="section-titre">⚒ NOS MAILLOTS ⚒</h1>
+  <img src="maillot int.png"     alt="maillot à domicile" onclick="ouvrirLightbox(this)" >
+  <img src="maillot ext.png"     alt="maillot extérieur" onclick="ouvrirLightbox(this)" >
+  <img src="maillot 3.png"     alt="troisième maillot"  onclick="ouvrirLightbox(this)">
+  <img src="maillot mineur.png"     alt="maillot édition mineur Lensois" onclick="ouvrirLightbox(this)" >
+  
+  
+  <!-- SECTION PHOTOS -->
+  <h1 class="section-titre">⚒ PHOTOS ⚒</h1>
+  <div class="photos-container">
+    <img src="unfp1.png"     alt="Photo UNFP 1"   onclick="ouvrirLightbox(this)">
+    <img src="unfp2.png"     alt="Photo UNFP 2"   onclick="ouvrirLightbox(this)">
+    <img src="bollaert1.jpg" alt="Stade Bollaert" onclick="ouvrirLightbox(this)">
+    <img src="mines.jpg"     alt="Les Mines"      onclick="ouvrirLightbox(this)">
+    <img src="lens1.png"     alt="Lens 1"         onclick="ouvrirLightbox(this)">
+    <img src="lens2.png"     alt="Lens 2"         onclick="ouvrirLightbox(this)">
+    <img src="lens3.png"     alt="Lens 3"         onclick="ouvrirLightbox(this)">
+    <img src="lens5.png"     alt="Lens 5"         onclick="ouvrirLightbox(this)">
+    <img src="lens6.png"     alt="Lens 6"         onclick="ouvrirLightbox(this)">
+    <img src="lens7.png"     alt="Lens 7"         onclick="ouvrirLightbox(this)">
+    <img src="lens8.jpg"     alt="Lens 8"         onclick="ouvrirLightbox(this)">
+    <img src="lens9.png"     alt="Lens 9"         onclick="ouvrirLightbox(this)">
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" onclick="fermerLightbox()">
+    <span id="lightbox-close" onclick="fermerLightbox()">✕</span>
+    <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- SECTION CHANTS -->
+  <h1 class="section-titre">⚒ CHANTS DE SUPPORTERS ⚒</h1>
+  <div class="chants-container">
+
+    <select id="selectChant" onchange="afficherChant(this.value)">
+      <option value="rien">-- Choisir un chant --</option>
+      <option value="LaLensoise">La Lensoise</option>
+      <option value="IssezHaut">Issez Haut !</option>
+      <option value="LesCorons">Les Corons</option>
+      <option value="LaFluteEnchantee">La Flûte Enchantée</option>
+      <option value="OnEstLa">On est là ! On est là !</option>
+      <option value="DepuisQuOnEstToutPetit">Depuis qu'on est tout petit !</option>
+    </select>
+
+    <div id="infoChant"></div>
+
+  </div>
+
+  <div class="spacer"></div>
+  <div class="spacer"></div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <a href="RCL1.htm" class="btn-lien">Accès première page</a>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- SCRIPT JAVASCRIPT -->
+  <script src="chants.js"></script>
+  <script>
+    function ouvrirLightbox(img) {
+      document.getElementById("lightbox-img").src = img.src;
+      document.getElementById("lightbox-img").alt = img.alt;
+      document.getElementById("lightbox").classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function fermerLightbox() {
+      document.getElementById("lightbox").classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    // Fermer avec la touche Echap
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") fermerLightbox();
+    });
+  </script>
+
+</body>
+</html>
